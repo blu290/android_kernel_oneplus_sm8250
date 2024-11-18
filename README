@@ -19,30 +19,37 @@ requirements for building and running the kernel, and information about
 the problems which may result by upgrading your kernel.
 
 
-yeah yeah whatever you've seen this before. idk how to write a readme but like
+---
+***yeah yeah whatever you've seen this before. idk how to write a readme but like***
+# The kernel
+* this kernel is mostly unmodified but patched with kernelsu and susfs. If you are unaware of what these are then you are definitely someone who won't benefit from this.
 
-this kernel is mostly stock, patched with kernelsu and susfs.
-if you don't know what those are, you're probs in the wrong place...
+# Features
+* LineageOS kernel
+* KernelSU integrated via patching source rather than kprobes
+* SUSFS for KSU
+* that's it, it's mostly unmodified
 
-most things work from my limited testing (daily use) but fast charging is broken
+# Known issues
+* fast charging is broken, I wish I knew why.
+* everything else works based on my daily use. I haven't extensively tested beyond that.
 
-i wish i knew why
+# Build
+* for now there is no public release because I can't be bothered to use anykernel3, i simply just repack my boot.img with the new kernel
+* to build you can just run build.sh, make sure you have all the requirements which idr.
 
-to build you can just run build.sh, make sure you have all the requirements which idr
-
-don't expect any support or anything, I made these modifications for personal use and
-i thought that someone could benefit from these being made public. i'll probs do a release
-when i have time to figure out how anykernel3 works but for now i'm a busy bee
+# Why you should use this:
+* **You Shouldn't!** no but seriously, this is just something that I use personally, and I see a lot of people who are unable to apply these patches to their own kernel so I decided to publish my work. You're free to use it but expect absolutely no support, if you have issues you're free to report or fix them. I probs won't get to them because I'm a very busy bee and I don't have *that* much time to figure out what's wrong. 
 
 # Credits:
 
-Jeus chrit (I stole his build script as a base)
+* Jeus chrit (I stole his build script as a base)
 https://github.com/JeusChrit/kernel_oneplus_sm8250/blob/171/build_kernel.sh
 
-Simon Punk (I stole susfs from him)
+* Simon Punk (I stole susfs from him)
 https://gitlab.com/simonpunk/susfs4ksu
 
-Weishu (I stole kernelsu from them)
+* Weishu (I stole kernelsu from them)
 https://github.com/tiann/KernelSU
 
 
