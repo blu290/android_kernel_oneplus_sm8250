@@ -37,7 +37,7 @@ the problems which may result by upgrading your kernel.
 
 # Build
 * for now there is no public release because I can't be bothered to use anykernel3, i simply just repack my boot.img with the new kernel
-* to build you can just run build.sh, make sure you have all the requirements which idr.
+* to build you can just run build.sh, make sure you have a suitable toolchain. I use neutron clang. if you aren't using this just modify the build script accordingly.
 
 # Why you should use this:
 * **You Shouldn't!** no but seriously, this is just something that I use personally, and I see a lot of people who are unable to apply these patches to their own kernel so I decided to publish my work. You're free to use it but expect absolutely no support, if you have issues you're free to report or fix them. I probs won't get to them because I'm a very busy bee and I don't have *that* much time to figure out what's wrong. 
