@@ -1,4 +1,6 @@
-#
+CONFIG_KSU=y
+CONFIG_KSU_SUSFS=y
+CONFIG_KSU_SUSFS_SUS_SU=n
 # Automatically generated file; DO NOT EDIT.
 # Linux/arm64 4.19.322 Kernel Configuration
 #
