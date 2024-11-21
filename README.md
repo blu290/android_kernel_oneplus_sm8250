@@ -28,6 +28,7 @@ the problems which may result by upgrading your kernel.
 * LineageOS kernel
 * KernelSU integrated via patching source rather than kprobes
 * SUSFS for KSU
+* hides lineageos symlinks 
 * that's it, it's mostly unmodified
 
 # Known issues
@@ -52,4 +53,9 @@ https://gitlab.com/simonpunk/susfs4ksu
 * Weishu (I stole kernelsu from them)
 https://github.com/tiann/KernelSU
 
+*backslashxx (I stole the idea of hiding lineageos symlinks from him)
+https://github.com/backslashxx/mojito_krenol/commit/f1a5d36634b21cad57506f2fb5de2bfde12f02a5
+
+*lineageos (I stole the kernel base from them)
+https://lineageos.org/
 
