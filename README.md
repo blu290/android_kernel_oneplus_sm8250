@@ -32,7 +32,7 @@ the problems which may result by upgrading your kernel.
 * that's it, it's mostly unmodified
 
 # Known issues
-* fast charging is broken, I wish I knew why.
+* fast charging is broken, I wish I knew why. It could be related to the rdbg.ko driver but I haven't tested it.
 * everything else works based on my daily use. I haven't extensively tested beyond that.
 
 # Build
