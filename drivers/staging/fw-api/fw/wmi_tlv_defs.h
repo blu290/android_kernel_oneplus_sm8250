@@ -2331,6 +2331,7 @@ typedef enum {
     OP(WMI_MLO_TLT_SELECTION_FOR_TID_SPRAY_EVENTID) \
     OP(WMI_MLO_PEER_TID_TO_LINK_MAP_EVENTID) \
     OP(WMI_USD_SERVICE_EVENTID) \
+    OP(WMI_REG_CHAN_LIST_CC_EXT2_EVENTID) \
     /* add new EVT_LIST elements above this line */
 
 
@@ -5665,7 +5666,6 @@ WMITLV_CREATE_PARAM_STRUC(WMI_VDEV_REPORT_AP_OPER_BW_CMDID);
 WMITLV_CREATE_PARAM_STRUC(WMI_USD_SERVICE_CMDID);
 
 
-
 /************************** TLV definitions of WMI events *******************************/
 
 /* Service Ready event */
@@ -6861,6 +6861,8 @@ WMITLV_CREATE_PARAM_STRUC(WMI_REG_CHAN_LIST_CC_EVENTID);
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_ARRAY_STRUC, wmi_regulatory_rule_meta_data, reg_meta_data, WMITLV_SIZE_VAR)
 WMITLV_CREATE_PARAM_STRUC(WMI_REG_CHAN_LIST_CC_EXT_EVENTID);
 
+
+/* Ext2 regulatory channel list of current country code */
 /* WMI AFC info event */
 #define WMITLV_TABLE_WMI_AFC_EVENTID(id,op,buf,len) \
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_afc_event_fixed_param, wmi_afc_event_fixed_param, fixed_param, WMITLV_SIZE_FIX) \

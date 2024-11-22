@@ -5430,7 +5430,6 @@ typedef struct {
 #define HTT_TX_PDEV_STATS_NUM_PER_COUNTERS 101
 #define HTT_MAX_POWER_LEVEL 32 /* 0 to 32 dBm */
 #define HTT_MAX_NEGATIVE_POWER_LEVEL 10 /* 0 to -10 dBm */
-
 /*
  * Introduce new TX counters to support 320MHz support and punctured modes
  */
@@ -9205,7 +9204,6 @@ typedef struct {
 /* preserve old name alias for new name consistent with the tag name */
 typedef htt_stats_phy_stats_tlv htt_phy_stats_tlv;
 
-
 #define HTT_STATS_PHY_RESET_CAL_DATA_COMPRESSED_M 0x00000001
 #define HTT_STATS_PHY_RESET_CAL_DATA_COMPRESSED_S 0
 #define HTT_STATS_PHY_RESET_CAL_DATA_COMPRESSED_GET(_var) \
@@ -9517,7 +9515,6 @@ typedef struct {
      * when explicitly requested by the host.
      */
     A_UINT32 nfcal_iteration_counts[3];
-
     /** Below union indicates the merge status for different cal */
     union {
         A_UINT32 calmerge_stats;
@@ -9719,7 +9716,6 @@ typedef struct {
      * units = 0.25dBm
      */
     A_INT32 max_reg_only_allowed_power[HTT_STATS_MAX_CHAINS];
-
     /** number of PPDUs transmitted for each number of tx chains */
     A_UINT32 tx_num_chains[HTT_STATS_MAX_CHAINS];
 

@@ -1,65 +1,65 @@
 /*
- * Copyright (c) 2010-2021 The Linux Foundation. All rights reserved.
- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
- *
- * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
- *
- *
- * Permission to use, copy, modify, and/or distribute this software for
- * any purpose with or without fee is hereby granted, provided that the
- * above copyright notice and this permission notice appear in all
- * copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
- * WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
- * DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
- * PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
- * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
- * PERFORMANCE OF THIS SOFTWARE.
- */
+* Copyright (c) 2010-2021 The Linux Foundation. All rights reserved.
+* Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+*
+* Previously licensed under the ISC license by Qualcomm Atheros, Inc.
+*
+*
+* Permission to use, copy, modify, and/or distribute this software for
+* any purpose with or without fee is hereby granted, provided that the
+* above copyright notice and this permission notice appear in all
+* copies.
+*
+* THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+* WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+* AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+* DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+* PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+* TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+* PERFORMANCE OF THIS SOFTWARE.
+*/
 
 /*
- * This file was originally distributed by Qualcomm Atheros, Inc.
- * under proprietary terms before Copyright ownership was assigned
- * to the Linux Foundation.
- */
+* This file was originally distributed by Qualcomm Atheros, Inc.
+* under proprietary terms before Copyright ownership was assigned
+* to the Linux Foundation.
+*/
 
 /**
- * @addtogroup WMIAPI
- *@{
- */
+* @addtogroup WMIAPI
+*@{
+*/
 
 /** @file
- * This file specifies the WMI interface for the  Software Architecture.
- *
- * It includes definitions of all the commands and events. Commands are messages
- * from the host to the target. Events and Replies are messages from the target
- * to the host.
- *
- * Ownership of correctness in regards to WMI commands
- * belongs to the host driver and the target is not required to validate
- * parameters for value, proper range, or any other checking.
- *
- * Guidelines for extending this interface are below.
- *
- * 1. Add new WMI commands ONLY within the specified range - 0x9000 - 0x9fff
- * 2. Use ONLY A_UINT32 type for defining member variables within WMI command/event
- *    structures. Do not use A_UINT8, A_UINT16, A_BOOL or enum types within these structures.
- * 3. DO NOT define bit fields within structures. Implement bit fields using masks
- *    if necessary. Do not use the programming language's bit field definition.
- * 4. Define macros for encode/decode of A_UINT8, A_UINT16 fields within the A_UINT32
- *    variables. Use these macros for set/get of these fields. Try to use this to
- *    optimize the structure without bloating it with A_UINT32 variables for every lower
- *    sized field.
- * 5. Do not use PACK/UNPACK attributes for the structures as each member variable is
- *    already 4-byte aligned by virtue of being a A_UINT32 type.
- * 6. Comment each parameter part of the WMI command/event structure by using the
- *    2 stars at the beginning of C comment instead of one star to enable HTML document
- *    generation using Doxygen.
- *
- */
+* This file specifies the WMI interface for the  Software Architecture.
+*
+* It includes definitions of all the commands and events. Commands are messages
+* from the host to the target. Events and Replies are messages from the target
+* to the host.
+*
+* Ownership of correctness in regards to WMI commands
+* belongs to the host driver and the target is not required to validate
+* parameters for value, proper range, or any other checking.
+*
+* Guidelines for extending this interface are below.
+*
+* 1. Add new WMI commands ONLY within the specified range - 0x9000 - 0x9fff
+* 2. Use ONLY A_UINT32 type for defining member variables within WMI command/event
+*    structures. Do not use A_UINT8, A_UINT16, A_BOOL or enum types within these structures.
+* 3. DO NOT define bit fields within structures. Implement bit fields using masks
+*    if necessary. Do not use the programming language's bit field definition.
+* 4. Define macros for encode/decode of A_UINT8, A_UINT16 fields within the A_UINT32
+*    variables. Use these macros for set/get of these fields. Try to use this to
+*    optimize the structure without bloating it with A_UINT32 variables for every lower
+*    sized field.
+* 5. Do not use PACK/UNPACK attributes for the structures as each member variable is
+*    already 4-byte aligned by virtue of being a A_UINT32 type.
+* 6. Comment each parameter part of the WMI command/event structure by using the
+*    2 stars at the beginning of C comment instead of one star to enable HTML document
+*    generation using Doxygen.
+*
+*/
 
 #ifndef _WMI_UNIFIED_H_
 #define _WMI_UNIFIED_H_
@@ -72,47 +72,47 @@ extern "C" {
 #include <wlan_defs.h>
 #include <wmi_services.h>
 /*
- * Include the defs of vendor-specific messages (or possibly dummy defs
- * if there are no actual vendor-specific message defs).
- */
+* Include the defs of vendor-specific messages (or possibly dummy defs
+* if there are no actual vendor-specific message defs).
+*/
 #include <wmi_unified_vendor.h>
 
 /* WMI_VAR_LEN_ARRAY1:
- * This macro is for converting the definition of existing variable-length
- * arrays within TLV structs of the form "type name[1];" to use the form
- * "type name[];" while ensuring that the length of the TLV struct is
- * unmodified by the conversion.
- * In general, any new variable-length structs should simply use
- * "type name[];" directly, rather than using WMI_VAR_LEN_ARRAY1.
- * However, if there's a legitimate reason to make the new variable-length
- * struct appear to not have a variable length, WMI_VAR_LEN_ARRAY1 can be
- * used for this purpose.
- */
+* This macro is for converting the definition of existing variable-length
+* arrays within TLV structs of the form "type name[1];" to use the form
+* "type name[];" while ensuring that the length of the TLV struct is
+* unmodified by the conversion.
+* In general, any new variable-length structs should simply use
+* "type name[];" directly, rather than using WMI_VAR_LEN_ARRAY1.
+* However, if there's a legitimate reason to make the new variable-length
+* struct appear to not have a variable length, WMI_VAR_LEN_ARRAY1 can be
+* used for this purpose.
+*/
 #if !defined(__KERNEL__)
-    #define WMI_DUMMY_ZERO_LEN_FIELD A_UINT32 dummy_zero_len_field[0]
+#define WMI_DUMMY_ZERO_LEN_FIELD A_UINT32 dummy_zero_len_field[0]
 #else
-    /*
-     * Certain build settings of the Linux kernel don't allow zero-element
-     * arrays, and C++ doesn't allow zero-length empty structs.
-     * Confirm that there's no build that combines kernel with C++.
-     */
-    #ifdef __cplusplus
-    #error unsupported combination of kernel and C plus plus
-    #endif
-    #define WMI_DUMMY_ZERO_LEN_FIELD struct {} dummy_zero_len_field
+/*
+ * Certain build settings of the Linux kernel don't allow zero-element
+ * arrays, and C++ doesn't allow zero-length empty structs.
+ * Confirm that there's no build that combines kernel with C++.
+ */
+#ifdef __cplusplus
+#error unsupported combination of kernel and C plus plus
+#endif
+#define WMI_DUMMY_ZERO_LEN_FIELD struct {} dummy_zero_len_field
 #endif
 
 #if defined(__WINDOWS__)
-    #define WMI_VAR_LEN_ARRAY1(type, name) type name[1]
+#define WMI_VAR_LEN_ARRAY1(type, name) type name[1]
 #else
-    #define WMI_VAR_LEN_ARRAY1(type, name) \
-        union { \
-            type name ## __first_elem; \
-            struct { \
-                WMI_DUMMY_ZERO_LEN_FIELD; \
-                type name[]; \
-            }; \
-        }
+#define WMI_VAR_LEN_ARRAY1(type, name) \
+    union { \
+        type name ## __first_elem; \
+        struct { \
+            WMI_DUMMY_ZERO_LEN_FIELD; \
+            type name[]; \
+        }; \
+    }
 #endif
 
 #define ATH_MAC_LEN             6               /**< length of MAC in bytes */
@@ -130,7 +130,7 @@ extern "C" {
 #define MAX_20MHZ_SEGMENTS 16  /* 320 MHz / 20 MHz = 16 (20 MHz subbands) */
 
 /* The WLAN_MAX_AC macro cannot be changed without breaking
-   WMI compatibility. */
+WMI compatibility. */
 /* The maximum value of access category */
 #define WLAN_MAX_AC  4
 
@@ -139,124 +139,124 @@ extern "C" {
 #define MAX_NUM_CQI_USERS_IN_STANDALONE_SND 3
 
 /*
- * These don't necessarily belong here; but as the MS/SM macros require
- * ar6000_internal.h to be included, it may not be defined as yet.
- */
+* These don't necessarily belong here; but as the MS/SM macros require
+* ar6000_internal.h to be included, it may not be defined as yet.
+*/
 #define WMI_F_MS(_v, _f)                                            \
-            (((_v) & (_f)) >> (_f##_S))
+        (((_v) & (_f)) >> (_f##_S))
 
 /*
- * This breaks the "good macro practice" of only referencing each
- * macro field once (to avoid things like field++ from causing issues.)
- */
+* This breaks the "good macro practice" of only referencing each
+* macro field once (to avoid things like field++ from causing issues.)
+*/
 #define WMI_F_RMW(_var, _v, _f)                                     \
-            do {                                                    \
-                (_var) &= ~(_f);                                    \
-                (_var) |= (((_v) << (_f##_S)) & (_f));              \
-            } while (0)
+        do {                                                    \
+            (_var) &= ~(_f);                                    \
+            (_var) |= (((_v) << (_f##_S)) & (_f));              \
+        } while (0)
 
 #define WMI_GET_BITS(_val,_index,_num_bits)                         \
-    (((_val) >> (_index)) & (((A_UINT32) 1 << (_num_bits)) - 1))
+(((_val) >> (_index)) & (((A_UINT32) 1 << (_num_bits)) - 1))
 
 #define WMI_SET_BITS(_var,_index,_num_bits,_val) do {                       \
-    (_var) &= ~((((A_UINT32) 1 << (_num_bits)) - 1) << (_index));           \
-    (_var) |= (((_val) & (((A_UINT32) 1 << (_num_bits)) - 1)) << (_index)); \
-    } while (0)
+(_var) &= ~((((A_UINT32) 1 << (_num_bits)) - 1) << (_index));           \
+(_var) |= (((_val) & (((A_UINT32) 1 << (_num_bits)) - 1)) << (_index)); \
+} while (0)
 
 #define WMI_APPEND_TWO_SET_BITS(var, lsb_index, lsb_num_bits, msb_index, msb_num_bits, val) \
-    do { \
-        WMI_SET_BITS(var, lsb_index, lsb_num_bits, val); \
-        WMI_SET_BITS(var, msb_index, msb_num_bits, (val >> lsb_num_bits)); \
-    } while(0)
+do { \
+    WMI_SET_BITS(var, lsb_index, lsb_num_bits, val); \
+    WMI_SET_BITS(var, msb_index, msb_num_bits, (val >> lsb_num_bits)); \
+} while(0)
 
 #define WMI_APPEND_TWO_GET_BITS(var, lsb_index, lsb_num_bits, msb_index, msb_num_bits, val) \
-    do { \
-        (var) = WMI_GET_BITS(val, lsb_index, lsb_num_bits); \
-        (var) |= (WMI_GET_BITS(val, msb_index, msb_num_bits) << lsb_num_bits); \
-    } while(0)
+do { \
+    (var) = WMI_GET_BITS(val, lsb_index, lsb_num_bits); \
+    (var) |= (WMI_GET_BITS(val, msb_index, msb_num_bits) << lsb_num_bits); \
+} while(0)
 
 /*
- * Below GET/SET BITS_ARRAY_LEN32_BYTES macros can be used when
- * reading/writing bits which are spread across array_len32 entries.
- * These can be used to GET/SET maximum of 32 bits only,
- * also array_len32 length should be limited to maximum of 32.
- */
+* Below GET/SET BITS_ARRAY_LEN32_BYTES macros can be used when
+* reading/writing bits which are spread across array_len32 entries.
+* These can be used to GET/SET maximum of 32 bits only,
+* also array_len32 length should be limited to maximum of 32.
+*/
 #define WMI_GET_BITS_ARRAY_LEN32_BYTES(var, _arrayp, _index, _num_bits) \
-    do { \
-        A_UINT8 i; \
-        for (i = 0; i < _num_bits; i++) { \
-            (var) |= (WMI_GET_BITS(_arrayp[(_index+i) / 32], ((_index+i) % 32), 1) << i); \
-        } \
-    } while(0)
+do { \
+    A_UINT8 i; \
+    for (i = 0; i < _num_bits; i++) { \
+        (var) |= (WMI_GET_BITS(_arrayp[(_index+i) / 32], ((_index+i) % 32), 1) << i); \
+    } \
+} while(0)
 
 #define WMI_SET_BITS_ARRAY_LEN32_BYTES(_arrayp, _index, _num_bits, val) \
-    do { \
-        A_UINT8 i; \
-        for (i = 0; i < _num_bits; i++) { \
-            WMI_SET_BITS(_arrayp[(_index+i) / 32], ((_index+i) % 32), 1, (val >> i)); \
-        } \
-    } while(0)
+do { \
+    A_UINT8 i; \
+    for (i = 0; i < _num_bits; i++) { \
+        WMI_SET_BITS(_arrayp[(_index+i) / 32], ((_index+i) % 32), 1, (val >> i)); \
+    } \
+} while(0)
 
 /**
- * A packed array is an array where each entry in the array is less than
- * or equal to 16 bits, and the entries are stuffed into an A_UINT32 array.
- * For example, if each entry in the array is 11 bits, then you can stuff
- * an array of 4 11-bit values into an array of 2 A_UINT32 values.
- * The first 2 11-bit values will be stored in the first A_UINT32,
- * and the last 2 11-bit values will be stored in the second A_UINT32.
- */
+* A packed array is an array where each entry in the array is less than
+* or equal to 16 bits, and the entries are stuffed into an A_UINT32 array.
+* For example, if each entry in the array is 11 bits, then you can stuff
+* an array of 4 11-bit values into an array of 2 A_UINT32 values.
+* The first 2 11-bit values will be stored in the first A_UINT32,
+* and the last 2 11-bit values will be stored in the second A_UINT32.
+*/
 #define WMI_PACKED_ARR_SIZE(num_entries,bits_per_entry) \
-    (((num_entries) / (32 / (bits_per_entry))) +            \
-    (((num_entries) % (32 / (bits_per_entry))) ? 1 : 0))
+(((num_entries) / (32 / (bits_per_entry))) +            \
+(((num_entries) % (32 / (bits_per_entry))) ? 1 : 0))
 
 #define WMI_RETURN_STRING(str) case ((str)): return (A_UINT8 *)(# str);
 
 static INLINE A_UINT32 wmi_packed_arr_get_bits(A_UINT32 *arr,
-    A_UINT32 entry_index, A_UINT32 bits_per_entry)
+A_UINT32 entry_index, A_UINT32 bits_per_entry)
 {
-    A_UINT32 entries_per_uint = (32 / bits_per_entry);
-    A_UINT32 uint_index = (entry_index / entries_per_uint);
-    A_UINT32 num_entries_in_prev_uints = (uint_index * entries_per_uint);
-    A_UINT32 index_in_uint = (entry_index - num_entries_in_prev_uints);
-    A_UINT32 start_bit_in_uint = (index_in_uint * bits_per_entry);
-    return (arr[uint_index] >> start_bit_in_uint) &
-            (((A_UINT32) 1 << bits_per_entry) - 1);
+A_UINT32 entries_per_uint = (32 / bits_per_entry);
+A_UINT32 uint_index = (entry_index / entries_per_uint);
+A_UINT32 num_entries_in_prev_uints = (uint_index * entries_per_uint);
+A_UINT32 index_in_uint = (entry_index - num_entries_in_prev_uints);
+A_UINT32 start_bit_in_uint = (index_in_uint * bits_per_entry);
+return (arr[uint_index] >> start_bit_in_uint) &
+        (((A_UINT32) 1 << bits_per_entry) - 1);
 }
 
 static INLINE void wmi_packed_arr_set_bits(A_UINT32 *arr, A_UINT32 entry_index,
-    A_UINT32 bits_per_entry, A_UINT32 val)
+A_UINT32 bits_per_entry, A_UINT32 val)
 {
-    A_UINT32 entries_per_uint = (32 / bits_per_entry);
-    A_UINT32 uint_index = (entry_index / entries_per_uint);
-    A_UINT32 num_entries_in_prev_uints = (uint_index * entries_per_uint);
-    A_UINT32 index_in_uint = (entry_index - num_entries_in_prev_uints);
-    A_UINT32 start_bit_in_uint = (index_in_uint * bits_per_entry);
+A_UINT32 entries_per_uint = (32 / bits_per_entry);
+A_UINT32 uint_index = (entry_index / entries_per_uint);
+A_UINT32 num_entries_in_prev_uints = (uint_index * entries_per_uint);
+A_UINT32 index_in_uint = (entry_index - num_entries_in_prev_uints);
+A_UINT32 start_bit_in_uint = (index_in_uint * bits_per_entry);
 
-    arr[uint_index] &=
-        ~((((A_UINT32) 1 << bits_per_entry) - 1) << start_bit_in_uint);
-    arr[uint_index] |=
-        ((val & (((A_UINT32) 1 << bits_per_entry) - 1)) << start_bit_in_uint);
+arr[uint_index] &=
+    ~((((A_UINT32) 1 << bits_per_entry) - 1) << start_bit_in_uint);
+arr[uint_index] |=
+    ((val & (((A_UINT32) 1 << bits_per_entry) - 1)) << start_bit_in_uint);
 }
 
 /** macro to convert MAC address from WMI word format to char array */
 #define WMI_MAC_ADDR_TO_CHAR_ARRAY(pwmi_mac_addr,c_macaddr) do {        \
-     (c_macaddr)[0] = (((pwmi_mac_addr)->mac_addr31to0)  >>  0) & 0xff; \
-     (c_macaddr)[1] = (((pwmi_mac_addr)->mac_addr31to0)  >>  8) & 0xff; \
-     (c_macaddr)[2] = (((pwmi_mac_addr)->mac_addr31to0)  >> 16) & 0xff; \
-     (c_macaddr)[3] = (((pwmi_mac_addr)->mac_addr31to0)  >> 24) & 0xff; \
-     (c_macaddr)[4] = (((pwmi_mac_addr)->mac_addr47to32) >>  0) & 0xff; \
-     (c_macaddr)[5] = (((pwmi_mac_addr)->mac_addr47to32) >>  8) & 0xff; \
-   } while (0)
+ (c_macaddr)[0] = (((pwmi_mac_addr)->mac_addr31to0)  >>  0) & 0xff; \
+ (c_macaddr)[1] = (((pwmi_mac_addr)->mac_addr31to0)  >>  8) & 0xff; \
+ (c_macaddr)[2] = (((pwmi_mac_addr)->mac_addr31to0)  >> 16) & 0xff; \
+ (c_macaddr)[3] = (((pwmi_mac_addr)->mac_addr31to0)  >> 24) & 0xff; \
+ (c_macaddr)[4] = (((pwmi_mac_addr)->mac_addr47to32) >>  0) & 0xff; \
+ (c_macaddr)[5] = (((pwmi_mac_addr)->mac_addr47to32) >>  8) & 0xff; \
+} while (0)
 
 /** macro to convert MAC address from char array to WMI word format */
 #define WMI_CHAR_ARRAY_TO_MAC_ADDR(c_macaddr,pwmi_mac_addr)  do { \
-    (pwmi_mac_addr)->mac_addr31to0 = \
-       (((A_UINT32)(c_macaddr)[0] <<  0) | \
-        ((A_UINT32)(c_macaddr)[1] <<  8) | \
-        ((A_UINT32)(c_macaddr)[2] << 16) | \
-        ((A_UINT32)(c_macaddr)[3] << 24)); \
-    (pwmi_mac_addr)->mac_addr47to32 = ((c_macaddr)[4] | ((c_macaddr)[5] << 8));\
-   } while (0)
+(pwmi_mac_addr)->mac_addr31to0 = \
+   (((A_UINT32)(c_macaddr)[0] <<  0) | \
+    ((A_UINT32)(c_macaddr)[1] <<  8) | \
+    ((A_UINT32)(c_macaddr)[2] << 16) | \
+    ((A_UINT32)(c_macaddr)[3] << 24)); \
+(pwmi_mac_addr)->mac_addr47to32 = ((c_macaddr)[4] | ((c_macaddr)[5] << 8));\
+} while (0)
 
 /** macro to convert generic hash of 6 bytes from WMI word format to char array */
 #define WMI_GENERIC_HASH_TO_CHAR_ARRAY(pwmi_generic_hash,c_generic_hash) do { \
@@ -1343,271 +1343,6 @@ typedef enum {
     /** Unsynchronized Service Discovery */
     WMI_USD_SERVICE_CMDID,
 
-
-    /*  Offload 11k related requests */
-    WMI_11K_OFFLOAD_REPORT_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_11K_OFFLOAD),
-    /* invoke neighbor report from FW */
-    WMI_11K_INVOKE_NEIGHBOR_REPORT_CMDID,
-
-    /* GPIO Configuration */
-    WMI_GPIO_CONFIG_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_GPIO),
-    WMI_GPIO_OUTPUT_CMDID,
-
-    /* Txbf configuration command */
-    WMI_TXBF_CMDID,
-
-    /* Antenna Controller, connected to wlan debug uart/GPIO. */
-    WMI_ANT_CONTROLLER_CMDID,
-
-    WMI_GPIO_STATE_REQ_CMDID,
-
-    /* FWTEST Commands */
-    WMI_FWTEST_VDEV_MCC_SET_TBTT_MODE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_FWTEST),
-    /** set NoA descs **/
-    WMI_FWTEST_P2P_SET_NOA_PARAM_CMDID,
-    /* UNIT Tests  */
-    WMI_UNIT_TEST_CMDID,
-    /* set debug and tuning parameters */
-    WMI_FWTEST_CMDID,
-    /* Q-Boost configuration test commands */
-    WMI_QBOOST_CFG_CMDID,
-    /* Simulation Test command  */
-    WMI_SIMULATION_TEST_CMDID,
-    /* WFA test config command */
-    WMI_WFA_CONFIG_CMDID,
-
-    /** TDLS Configuration */
-    /** enable/disable TDLS */
-    WMI_TDLS_SET_STATE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_TDLS),
-    /** set tdls peer state */
-    WMI_TDLS_PEER_UPDATE_CMDID,
-    /** TDLS Offchannel control */
-    WMI_TDLS_SET_OFFCHAN_MODE_CMDID,
-
-    /** Resmgr Configuration */
-    /** Adaptive OCS is enabled by default in the FW. This command is used to
-     * disable FW based adaptive OCS.
-     */
-    WMI_RESMGR_ADAPTIVE_OCS_ENABLE_DISABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_RESMGR),
-    /** set the requested channel time quota for the home channels */
-    WMI_RESMGR_SET_CHAN_TIME_QUOTA_CMDID,
-    /** set the requested latency for the home channels */
-    WMI_RESMGR_SET_CHAN_LATENCY_CMDID,
-
-    /** STA SMPS Configuration */
-    /** force SMPS mode */
-    WMI_STA_SMPS_FORCE_MODE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_STA_SMPS),
-    /** set SMPS parameters */
-    WMI_STA_SMPS_PARAM_CMDID,
-
-    /* Wlan HB commands*/
-    /* enable/disable wlan HB */
-    WMI_HB_SET_ENABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_WLAN_HB),
-    /* set tcp parameters for wlan HB */
-    WMI_HB_SET_TCP_PARAMS_CMDID,
-    /* set tcp pkt filter for wlan HB */
-    WMI_HB_SET_TCP_PKT_FILTER_CMDID,
-    /* set udp parameters for wlan HB */
-    WMI_HB_SET_UDP_PARAMS_CMDID,
-    /* set udp pkt filter for wlan HB */
-    WMI_HB_SET_UDP_PKT_FILTER_CMDID,
-
-    /* OIC ping keep alive */
-    WMI_HB_OIC_PING_OFFLOAD_PARAM_CMDID,
-    WMI_HB_OIC_PING_OFFLOAD_SET_ENABLE_CMDID,
-
-    /* WMI commands related to DHCP Lease Renew Offload **/
-    WMI_HB_DHCP_LEASE_RENEW_OFFLOAD_CMDID,
-
-    /** Wlan RMC commands*/
-    /** enable/disable RMC */
-    WMI_RMC_SET_MODE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_RMC),
-    /** configure action frame period */
-    WMI_RMC_SET_ACTION_PERIOD_CMDID,
-    /** For debug/future enhancement purposes only,
-     *  configures/finetunes RMC algorithms */
-    WMI_RMC_CONFIG_CMDID,
-    /** select manual leader */
-    WMI_RMC_SET_MANUAL_LEADER_CMDID,
-
-    /** WLAN MHF offload commands */
-    /** enable/disable MHF offload */
-    WMI_MHF_OFFLOAD_SET_MODE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_MHF_OFL),
-    /** Plumb routing table for MHF offload */
-    WMI_MHF_OFFLOAD_PLUMB_ROUTING_TBL_CMDID,
-
-    /*location scan commands*/
-    /*start batch scan*/
-    WMI_BATCH_SCAN_ENABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_LOCATION_SCAN),
-    /*stop batch scan*/
-    WMI_BATCH_SCAN_DISABLE_CMDID,
-    /*get batch scan result*/
-    WMI_BATCH_SCAN_TRIGGER_RESULT_CMDID,
-
-
-    /* OEM related cmd */
-    WMI_OEM_REQ_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_OEM),
-    WMI_OEM_REQUEST_CMDID, /* UNUSED */
-    /* OEM related cmd used for Low Power ranging */
-    WMI_LPI_OEM_REQ_CMDID,
-    WMI_OEM_DMA_RING_CFG_REQ_CMDID,
-    /** Command to handle OEM's opaque data */
-    WMI_OEM_DATA_CMDID,
-
-
-    /** Nan Request */
-    WMI_NAN_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_NAN),
-    /** Command to handle OEM's NAN specific opaque data */
-    WMI_NAN_OEM_DATA_CMDID,
-
-    /** Modem power state command */
-    WMI_MODEM_POWER_STATE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_COEX),
-    WMI_CHAN_AVOID_UPDATE_CMDID,
-    WMI_COEX_CONFIG_CMDID,
-    WMI_CHAN_AVOID_RPT_ALLOW_CMDID,
-    WMI_COEX_GET_ANTENNA_ISOLATION_CMDID,
-    WMI_SAR_LIMITS_CMDID,
-    WMI_SAR_GET_LIMITS_CMDID,
-    /** Dedicated BT Antenna Mode (DBAM) command */
-    WMI_COEX_DBAM_CMDID,
-    WMI_TAS_POWER_HISTORY_CMDID,
-    WMI_ESL_EGID_CMDID,
-    WMI_COEX_MULTIPLE_CONFIG_CMDID,
-
-    /**
-     *  OBSS scan offload enable/disable commands
-     *  OBSS scan enable CMD will send to FW after VDEV UP, if these conditions are true:
-     *  1.  WMI_SERVICE_OBSS_SCAN is reported by FW in service ready,
-     *  2.  STA connect to a 2.4 GHz ht20/ht40 AP,
-     *  3.  AP enable 20/40 coexistence (OBSS_IE-74 can be found in beacon or association response)
-     *  If OBSS parameters from beacon changed, also use enable CMD to update parameters.
-     *  OBSS scan disable CMD will send to FW if have enabled when tearing down connection.
-     */
-    WMI_OBSS_SCAN_ENABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_OBSS_OFL),
-    WMI_OBSS_SCAN_DISABLE_CMDID,
-    WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID,
-
-    /** LPI commands */
-    /** LPI mgmt snooping config command */
-    WMI_LPI_MGMT_SNOOPING_CONFIG_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_LPI),
-    /** LPI scan start command */
-    WMI_LPI_START_SCAN_CMDID,
-    /** LPI scan stop command */
-    WMI_LPI_STOP_SCAN_CMDID,
-
-    /** ExtScan commands */
-    WMI_EXTSCAN_START_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_EXTSCAN),
-    WMI_EXTSCAN_STOP_CMDID,
-    WMI_EXTSCAN_CONFIGURE_WLAN_CHANGE_MONITOR_CMDID,
-    WMI_EXTSCAN_CONFIGURE_HOTLIST_MONITOR_CMDID,
-    WMI_EXTSCAN_GET_CACHED_RESULTS_CMDID,
-    WMI_EXTSCAN_GET_WLAN_CHANGE_RESULTS_CMDID,
-    WMI_EXTSCAN_SET_CAPABILITIES_CMDID,
-    WMI_EXTSCAN_GET_CAPABILITIES_CMDID,
-    WMI_EXTSCAN_CONFIGURE_HOTLIST_SSID_MONITOR_CMDID,
-    WMI_EXTSCAN_CONFIGURE_MAWC_CMDID,
-
-    /** DHCP server offload commands */
-    WMI_SET_DHCP_SERVER_OFFLOAD_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_DHCP_OFL),
-
-    /** IPA Offload features related commands */
-    WMI_IPA_OFFLOAD_ENABLE_DISABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_IPA),
-
-    /** mDNS responder offload commands */
-    WMI_MDNS_OFFLOAD_ENABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_MDNS_OFL),
-    WMI_MDNS_SET_FQDN_CMDID,
-    WMI_MDNS_SET_RESPONSE_CMDID,
-    WMI_MDNS_GET_STATS_CMDID,
-    WMI_MDNS_SET_STAIP_CMDID,
-
-    /* enable/disable AP Authentication offload */
-    WMI_SAP_OFL_ENABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_SAP_OFL),
-    WMI_SAP_SET_BLACKLIST_PARAM_CMDID,
-    WMI_SAP_OBSS_DETECTION_CFG_CMDID,
-
-    /** Out-of-context-of-BSS (OCB) commands */
-    WMI_OCB_SET_CONFIG_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_OCB),
-    WMI_OCB_SET_UTC_TIME_CMDID,
-    WMI_OCB_START_TIMING_ADVERT_CMDID,
-    WMI_OCB_STOP_TIMING_ADVERT_CMDID,
-    WMI_OCB_GET_TSF_TIMER_CMDID,
-    WMI_DCC_GET_STATS_CMDID,
-    WMI_DCC_CLEAR_STATS_CMDID,
-    WMI_DCC_UPDATE_NDL_CMDID,
-
-    /* System-On-Chip commands */
-    WMI_SOC_SET_PCL_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_SOC),
-    WMI_SOC_SET_HW_MODE_CMDID,
-    WMI_SOC_SET_DUAL_MAC_CONFIG_CMDID,
-    WMI_SOC_SET_ANTENNA_MODE_CMDID,
-    /** enable/disable TQM reset (SOC level) feature */
-    WMI_SOC_TQM_RESET_ENABLE_DISABLE_CMDID,
-    /*
-     * WMI Command to enable custom classification of packets in Tx path
-     * and specifiy packets of interest for classification.
-     */
-    WMI_SOC_TX_PACKET_CUSTOM_CLASSIFY_CMDID,
-
-    /* packet filter commands */
-    WMI_PACKET_FILTER_CONFIG_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_PKT_FILTER),
-    WMI_PACKET_FILTER_ENABLE_CMDID,
-
-    /** Motion Aided WiFi Connectivity (MAWC) commands */
-    WMI_MAWC_SENSOR_REPORT_IND_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_MAWC),
-
-    /** WMI commands related to PMF 11w Offload */
-    WMI_PMF_OFFLOAD_SET_SA_QUERY_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_PMF_OFFLOAD),
-
-    /** WMI commands related to pkt filter (BPF) offload */
-    WMI_BPF_GET_CAPABILITY_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_BPF_OFFLOAD),
-    WMI_BPF_GET_VDEV_STATS_CMDID,
-    WMI_BPF_SET_VDEV_INSTRUCTIONS_CMDID,
-    WMI_BPF_DEL_VDEV_INSTRUCTIONS_CMDID,
-    WMI_BPF_SET_VDEV_ACTIVE_MODE_CMDID,
-    WMI_BPF_SET_VDEV_ENABLE_CMDID,
-    WMI_BPF_SET_VDEV_WORK_MEMORY_CMDID,
-    WMI_BPF_GET_VDEV_WORK_MEMORY_CMDID,
-
-    /** WMI commands related to monitor mode. */
-    WMI_MNT_FILTER_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_MONITOR),
-
-    /** WMI commands related to regulatory offload */
-    WMI_SET_CURRENT_COUNTRY_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_REGULATORY),
-    WMI_11D_SCAN_START_CMDID,
-    WMI_11D_SCAN_STOP_CMDID,
-    WMI_SET_INIT_COUNTRY_CMDID,
-    WMI_AFC_CMDID,
-
-    /**
-     * Nan Data commands
-     * NDI - NAN Data Interface
-     * NDP - NAN Data Path
-     */
-    /* Commands in prototyping phase */
-    WMI_NDI_GET_CAP_REQ_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_PROTOTYPE),
-    WMI_NDP_INITIATOR_REQ_CMDID,
-    WMI_NDP_RESPONDER_REQ_CMDID,
-    WMI_NDP_END_REQ_CMDID,
-    WMI_NDP_CMDID,
-
-    /** WMI commands related to HW data filtering **/
-    WMI_HW_DATA_FILTER_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_HW_DATA_FILTER),
-
-    /** WMI commands related to WLAN latency module **/
-    WMI_WLM_CONFIG_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_WLM),
-
-    /** WMI commands related to STA & AP TWT module **/
-    WMI_TWT_ENABLE_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_TWT),
-    WMI_TWT_DISABLE_CMDID,
-    WMI_TWT_ADD_DIALOG_CMDID,
-    WMI_TWT_DEL_DIALOG_CMDID,
-    WMI_TWT_PAUSE_DIALOG_CMDID,
-    WMI_TWT_RESUME_DIALOG_CMDID,
-    WMI_TWT_BTWT_INVITE_STA_CMDID,
-    WMI_TWT_BTWT_REMOVE_STA_CMDID,
-    WMI_TWT_NUDGE_DIALOG_CMDID,
-    WMI_VDEV_SET_TWT_EDCA_PARAMS_CMDID, /* XPAN TWT */
-    WMI_VDEV_GET_TWT_SESSION_STATS_INFO_CMDID,
     WMI_TWT_VDEV_CONFIG_CMDID,
 
     /** WMI commands related to motion detection **/
@@ -2375,124 +2110,7 @@ typedef enum {
      */
     WMI_USD_SERVICE_EVENTID,
 
-
-    /* GPIO Event */
-    WMI_GPIO_INPUT_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_GPIO),
-    /** upload H_CV info WMI event
-     * to indicate uploaded H_CV info to host
-     */
-    WMI_UPLOADH_EVENTID,
-
-    /** capture H info WMI event
-     * to indicate captured H info to host
-     */
-    WMI_CAPTUREH_EVENTID,
-    /* hw RFkill */
-    WMI_RFKILL_STATE_CHANGE_EVENTID,
-
-    /* Smart Antenna Controller status */
-    WMI_SMARTANT_STATE_CHANGE_EVENTID,
-
-    WMI_GPIO_STATE_RES_EVENTID,
-
-    /* TDLS Event */
-    WMI_TDLS_PEER_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_TDLS),
-
-    /* Resmgr Event */
-    /* deliver the new channel time quota for home channels */
-    WMI_RESMGR_CHAN_TIME_QUOTA_CHANGED_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_RESMGR),
-
-    /** STA SMPS Event */
-    /** force SMPS mode */
-    WMI_STA_SMPS_FORCE_MODE_COMPLETE_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_STA_SMPS),
-
-    /*location scan event*/
-    /*report the firmware's capability of batch scan*/
-    WMI_BATCH_SCAN_ENABLED_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_LOCATION_SCAN),
-    /*batch scan result*/
-    WMI_BATCH_SCAN_RESULT_EVENTID,
-    /* OEM Event */
-    WMI_OEM_CAPABILITY_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_OEM), /*DEPRECATED*/
-    WMI_OEM_MEASUREMENT_REPORT_EVENTID, /* DEPRECATED */
-    WMI_OEM_ERROR_REPORT_EVENTID, /* DEPRECATED */
-    WMI_OEM_RESPONSE_EVENTID,
-    WMI_OEM_DMA_RING_CFG_RSP_EVENTID,
-    WMI_OEM_DMA_BUF_RELEASE_EVENTID,
-    WMI_OEM_DATA_EVENTID,
-
-    /* NAN Event */
-    WMI_NAN_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_NAN),
-    WMI_NAN_DISC_IFACE_CREATED_EVENTID,
-    WMI_NAN_DISC_IFACE_DELETED_EVENTID,
-    WMI_NAN_STARTED_CLUSTER_EVENTID,
-    WMI_NAN_JOINED_CLUSTER_EVENTID,
-    WMI_NAN_DMESG_EVENTID,
-    /** Event to deliver OEM's NAN specific opaque data */
-    WMI_NAN_OEM_DATA_EVENTID,
-
-    /* Coex Event */
-    WMI_COEX_REPORT_ANTENNA_ISOLATION_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_COEX),
-    WMI_SAR_GET_LIMITS_EVENTID,
-    /** Dedicated BT Antenna Mode (DBAM) complete event */
-    WMI_COEX_DBAM_COMPLETE_EVENTID,
-    WMI_TAS_POWER_HISTORY_EVENTID,
-
-    /* LPI Event */
-    WMI_LPI_RESULT_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_LPI),
-    WMI_LPI_STATUS_EVENTID,
-    WMI_LPI_HANDOFF_EVENTID,
-
-    /* ExtScan events */
-    WMI_EXTSCAN_START_STOP_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_EXTSCAN),
-    WMI_EXTSCAN_OPERATION_EVENTID,
-    WMI_EXTSCAN_TABLE_USAGE_EVENTID,
-    WMI_EXTSCAN_CACHED_RESULTS_EVENTID,
-    WMI_EXTSCAN_WLAN_CHANGE_RESULTS_EVENTID,
-    WMI_EXTSCAN_HOTLIST_MATCH_EVENTID,
-    WMI_EXTSCAN_CAPABILITIES_EVENTID,
-    WMI_EXTSCAN_HOTLIST_SSID_MATCH_EVENTID,
-
-    /* mDNS offload events */
-    WMI_MDNS_STATS_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_MDNS_OFL),
-
-    /* SAP Authentication offload events */
-    WMI_SAP_OFL_ADD_STA_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_SAP_OFL),
-    WMI_SAP_OFL_DEL_STA_EVENTID,
-    WMI_SAP_OBSS_DETECTION_REPORT_EVENTID,
-
-    /* OBSS Offloads events */
-    WMI_OBSS_COLOR_COLLISION_DETECTION_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_OBSS_OFL),
-
-    /** Out-of-context-of-bss (OCB) events */
-    WMI_OCB_SET_CONFIG_RESP_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_OCB),
-    WMI_OCB_GET_TSF_TIMER_RESP_EVENTID,
-    WMI_DCC_GET_STATS_RESP_EVENTID,
-    WMI_DCC_UPDATE_NDL_RESP_EVENTID,
-    WMI_DCC_STATS_EVENTID,
-
-    /* System-On-Chip events */
-    WMI_SOC_SET_HW_MODE_RESP_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_SOC),
-    WMI_SOC_HW_MODE_TRANSITION_EVENTID,
-    WMI_SOC_SET_DUAL_MAC_CONFIG_RESP_EVENTID,
-
-    /** Motion Aided WiFi Connectivity (MAWC) events */
-    WMI_MAWC_ENABLE_SENSOR_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_MAWC),
-
-    /** pkt filter (BPF) offload relevant events */
-    WMI_BPF_CAPABILIY_INFO_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_BPF_OFFLOAD),
-    WMI_BPF_VDEV_STATS_INFO_EVENTID,
-    WMI_BPF_GET_VDEV_WORK_MEMORY_RESP_EVENTID,
-
-    /* RMC specific event */
-    /* RMC manual leader selected event */
-    WMI_RMC_NEW_LEADER_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_RMC),
-
-    /** WMI events related to regulatory offload */
-    WMI_REG_CHAN_LIST_CC_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_REGULATORY),
-    WMI_11D_NEW_COUNTRY_EVENTID,
-    WMI_REG_CHAN_LIST_CC_EXT_EVENTID,
-    WMI_AFC_EVENTID,
-    WMI_REG_CHAN_LIST_CC_EXT2_EVENTID, /* DEPRECATED */
+    WMI_REG_CHAN_LIST_CC_EXT2_EVENTID,
 
     /** Events for TWT(Target Wake Time) of STA and AP  */
     WMI_TWT_ENABLE_COMPLETE_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_TWT),
@@ -27472,7 +27090,6 @@ typedef struct
     /** Scan requestor ID */
     A_UINT32      scan_req_id;
 }  wmi_lpi_status_event_fixed_param;
-
 typedef struct
 {
     A_UINT32      tlv_header;
@@ -38523,7 +38140,6 @@ typedef struct {
     A_UINT32 num_6ghz_reg_rules;
 } wmi_regulatory_rule_meta_data;
 
-/* WFA AFC Version */
 #define WMI_AFC_WFA_MINOR_VERSION_GET(afc_wfa_version)             WMI_GET_BITS(afc_wfa_version, 0, 16)
 #define WMI_AFC_WFA_MINOR_VERSION_SET(afc_wfa_version, value)      WMI_SET_BITS(afc_wfa_version, 0, 16, value)
 #define WMI_AFC_WFA_MAJOR_VERSION_GET(afc_wfa_version)             WMI_GET_BITS(afc_wfa_version, 16, 16)
@@ -48864,7 +48480,6 @@ typedef struct {
     /* status takes values from WMI_MLO_TID_TO_LINK_MAP_STATUS */
     A_UINT32 status;
 } wmi_mlo_peer_tid_to_link_map_event_fixed_param;
-
 
 
 /* ADD NEW DEFS HERE */
