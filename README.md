@@ -61,3 +61,5 @@ https://github.com/backslashxx/mojito_krenol/commit/f1a5d36634b21cad57506f2fb5de
 * lineageos (I stole the kernel base from them)
 https://lineageos.org/
 
+---
+probs EOL now. I broke my phone screen and I'm probs gonna just sell it and get something better
