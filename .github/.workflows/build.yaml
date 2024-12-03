@@ -1,0 +1,40 @@
+name: build kernel
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install dependencies
+      run: sudo apt-get install -y build-essential gcc make perl dkms git wget libncurses-dev flex bison openssl libssl-dev libelf-dev libudev-dev libpci-dev libiberty-dev autoconf automake libtool libssl-dev
+      - name: get toolchain
+      run: |
+        mkdir -p "$HOME/toolchains/neutron-clang"
+        cd "$HOME/toolchains/neutron-clang"
+        curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman"
+        chmod +x antman
+        ./antman -S
+        cd $GITHUB_WORKSPACE
+    - name: build kernel
+      run: |
+        git submodule update --init --recursive
+        ./build.sh
+    
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: kernel
+        path: out/arch/arm64/boot/Image
+    
+    - name: create release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        upload_url: ${{ steps.upload_artifact.outputs.upload_url }}
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        asset_path: out/arch/arm64/boot/Image
+        asset_name: kernel
+        body: |
+          The kernel built successfully.
