@@ -903,6 +903,7 @@ static int ovl_dir_open(struct inode *inode, struct file *file)
 		goto bypass_orig_flow;
 	}
 #endif
+
 	type = ovl_path_real(file->f_path.dentry, &realpath);
 #ifdef CONFIG_KSU_SUSFS_SUS_OVERLAYFS
 bypass_orig_flow:
