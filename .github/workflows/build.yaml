@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: install dependencies
-      run: sudo apt-get install -y build-essential gcc libc6 make perl dkms git wget libncurses-dev flex bison openssl libssl-dev libelf-dev libudev-dev libpci-dev libiberty-dev autoconf automake libtool libssl-dev
+      run: sudo apt-get install -y build-essential gcc libc6 make perl dkms git wget libncurses-dev flex bison openssl libssl-dev libelf-dev libudev-dev libpci-dev libiberty-dev autoconf automake libtool libssl-dev glibc-source
     - name: get toolchain
       run: |
         mkdir -p "$HOME/toolchains/neutron-clang"
