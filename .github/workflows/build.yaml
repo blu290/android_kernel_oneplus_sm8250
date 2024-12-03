@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: install dependencies
       run: sudo apt-get install -y build-essential gcc make perl dkms git wget libncurses-dev flex bison openssl libssl-dev libelf-dev libudev-dev libpci-dev libiberty-dev autoconf automake libtool libssl-dev
     - name: get toolchain
@@ -22,14 +22,14 @@ jobs:
         ./build.sh
     
     - name: upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: kernel
         path: out/arch/arm64/boot/Image
     
     - name: create release
       id: create_release
-      uses: actions/create-release@v1
+      uses: actions/create-release@v4
       with:
         upload_url: ${{ steps.upload_artifact.outputs.upload_url }}
         tag_name: ${{ github.ref }}
