@@ -87,7 +87,7 @@ modules.builtin
 !.cocciconfig
 !.clang-format
 !.github
-!.github/.workflows
+!.github/workflows
 #
 # Generated include files
 #
