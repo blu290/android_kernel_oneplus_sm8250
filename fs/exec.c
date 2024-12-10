@@ -1929,14 +1929,9 @@ out_ret:
 		putname(filename);
 	return retval;
 }
-
-#ifdef CONFIG_KSU_SUSFS_SUS_SU
-extern bool susfs_is_sus_su_hooks_enabled __read_mostly;
+#ifdef CONFIG_KSU
 extern int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv,
-				void *envp, int *flags);
-#elif defined(CONFIG_KSU)
-extern int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv,
-				void *envp, int *flags);
+			       void *envp, int *flags);
 #endif
 
 static int do_execveat_common(int fd, struct filename *filename,
@@ -1944,14 +1939,7 @@ static int do_execveat_common(int fd, struct filename *filename,
 			      struct user_arg_ptr envp,
 			      int flags)
 {
-#ifdef CONFIG_KSU_SUSFS_SUS_SU
-	if (susfs_is_sus_su_hooks_enabled)
-		ksu_handle_execveat(&fd, &filename, &argv, &envp, &flags);
-	//this is retarded but i thought it would be funny
-	else{
-		ksu_handle_execveat(&fd, &filename, &argv, &envp, &flags);
-	}
-#elif defined(CONFIG_KSU)
+#ifdef CONFIG_KSU
 	ksu_handle_execveat(&fd, &filename, &argv, &envp, &flags);
 #endif
 	return __do_execve_file(fd, filename, argv, envp, flags, NULL);

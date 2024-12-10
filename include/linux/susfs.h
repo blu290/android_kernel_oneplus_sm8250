@@ -32,6 +32,7 @@
 #define CMD_SUSFS_SHOW_VERSION 0x555e1
 #define CMD_SUSFS_SHOW_ENABLED_FEATURES 0x555e2
 #define CMD_SUSFS_SHOW_VARIANT 0x555e3
+#define CMD_SUSFS_SHOW_SUS_SU_WORKING_MODE 0x555e4
 #define CMD_SUSFS_SUS_SU 0x60000
 
 #define SUSFS_MAX_LEN_PATHNAME 256 // 256 should address many paths already unless you are doing some strange experimental stuff, then set your own desired length
@@ -209,7 +210,7 @@ int susfs_spoof_uname(struct new_utsname* tmp);
 #ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
 void susfs_set_log(bool enabled);
 #endif
-/* spoof_bootconfig */
+/* spoof_proc_cmdline */
 #ifdef CONFIG_KSU_SUSFS_SPOOF_PROC_CMDLINE
 int susfs_set_proc_cmdline(char* __user user_fake_proc_cmdline);
 int susfs_spoof_proc_cmdline(struct seq_file *m);
@@ -221,6 +222,7 @@ struct filename* susfs_get_redirected_path(unsigned long ino);
 #endif
 /* sus_su */
 #ifdef CONFIG_KSU_SUSFS_SUS_SU
+int susfs_get_sus_su_working_mode(void);
 int susfs_sus_su(struct st_sus_su* __user user_info);
 #endif
 

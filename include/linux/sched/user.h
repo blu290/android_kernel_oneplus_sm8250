@@ -13,6 +13,8 @@ struct key;
  * Some day this will be a full-fledged user tracking system..
  */
 struct user_struct {
+	u64 android_kabi_reserved1;
+	u64 android_kabi_reserved2;
 	refcount_t __count;	/* reference count */
 	atomic_t processes;	/* How many processes does this user have? */
 	atomic_t sigpending;	/* How many pending signals does this user have? */
@@ -46,8 +48,6 @@ struct user_struct {
 
 	/* Miscellaneous per-user rate limit */
 	struct ratelimit_state ratelimit;
-	u64 android_kabi_reserved1;
-	u64 android_kabi_reserved2;
 };
 
 extern int uids_sysfs_init(void);

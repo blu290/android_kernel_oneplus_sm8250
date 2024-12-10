@@ -17,7 +17,9 @@
 #ifdef CONFIG_KSU_SUSFS_SUS_SU
 #include <linux/sus_su.h>
 #endif
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0)
 #include "pnode.h"
+#endif
 
 spinlock_t susfs_spin_lock;
 
@@ -614,7 +616,7 @@ void susfs_set_log(bool enabled) {
 }
 #endif // #ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
 
-/* spoof_bootconfig */
+/* spoof_proc_cmdline */
 #ifdef CONFIG_KSU_SUSFS_SPOOF_PROC_CMDLINE
 char *fake_proc_cmdline = NULL;
 int susfs_set_proc_cmdline(char* __user user_fake_proc_cmdline) {
@@ -748,8 +750,14 @@ struct filename* susfs_get_redirected_path(unsigned long ino) {
 /* sus_su */
 #ifdef CONFIG_KSU_SUSFS_SUS_SU
 bool susfs_is_sus_su_hooks_enabled __read_mostly = false;
+static int susfs_sus_su_working_mode = 0;
 extern void ksu_susfs_enable_sus_su(void);
 extern void ksu_susfs_disable_sus_su(void);
+
+int susfs_get_sus_su_working_mode(void) {
+	return susfs_sus_su_working_mode;
+}
+
 int susfs_sus_su(struct st_sus_su* __user user_info) {
 	struct st_sus_su info;
 
@@ -761,6 +769,7 @@ int susfs_sus_su(struct st_sus_su* __user user_info) {
 	if (info.mode == SUS_SU_WITH_OVERLAY) {
 		sus_su_fifo_init(&info.maj_dev_num, info.drv_path);
 		ksu_susfs_enable_sus_su();
+		susfs_sus_su_working_mode = SUS_SU_WITH_OVERLAY;
 		if (info.maj_dev_num < 0) {
 			SUSFS_LOGI("failed to get proper info.maj_dev_num: %d\n", info.maj_dev_num);
 			return 1;
@@ -772,6 +781,7 @@ int susfs_sus_su(struct st_sus_su* __user user_info) {
 		return 0;
 	} else if (info.mode == SUS_SU_WITH_HOOKS) {
 		ksu_susfs_enable_sus_su();
+		susfs_sus_su_working_mode = SUS_SU_WITH_HOOKS;
 		susfs_is_sus_su_hooks_enabled = true;
 		SUSFS_LOGI("core kprobe hooks for ksu are disabled!\n");
 		SUSFS_LOGI("non-kprobe hook sus_su is enabled!\n");
@@ -780,6 +790,7 @@ int susfs_sus_su(struct st_sus_su* __user user_info) {
 	} else if (info.mode == 0) {
 		susfs_is_sus_su_hooks_enabled = false;
 		ksu_susfs_disable_sus_su();
+		susfs_sus_su_working_mode = 0;
 		sus_su_fifo_exit(&info.maj_dev_num, info.drv_path);
 		if (info.maj_dev_num != -1) {
 			SUSFS_LOGI("failed to set proper info.maj_dev_num to '-1'\n");
@@ -801,7 +812,7 @@ void susfs_init(void) {
 	spin_lock_init(&susfs_uname_spin_lock);
 	susfs_my_uname_init();
 #endif
-	SUSFS_LOGI("susfs is initialized!\n");
+	SUSFS_LOGI("susfs is initialized! version: " SUSFS_VERSION " \n");
 }
 
 /* No module exit is needed becuase it should never be a loadable kernel module */
