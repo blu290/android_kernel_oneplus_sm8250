@@ -20,6 +20,9 @@ else
 obj-y +=	no-block.o
 endif
 
+obj-$(config_ksu_susfs) += susfs.o
+obj-$(config_ksu_susfs_sus_su) += sus_su.o
+
 obj-$(CONFIG_PROC_FS) += proc_namespace.o
 
 obj-y				+= notify/

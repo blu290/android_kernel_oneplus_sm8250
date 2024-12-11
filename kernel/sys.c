@@ -1239,7 +1239,9 @@ static int override_release(char __user *release, size_t len)
 	}
 	return ret;
 }
-
+#ifdef CONFIG_KSU_SUSFS
+#include <linux/susfs.h>
+#endif
 #ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
 extern int susfs_spoof_uname(struct new_utsname* tmp);
 #endif

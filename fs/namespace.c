@@ -29,7 +29,9 @@
 
 #include "pnode.h"
 #include "internal.h"
-
+#ifdef CONFIG_KSU_SUSFS
+#include <linux/susfs.h>
+#endif
 #ifdef CONFIG_OPLUS_SECURE_GUARD
 #ifdef CONFIG_OPLUS_MOUNT_BLOCK
 #ifdef CONFIG_OPLUS_KEVENT_UPLOAD
